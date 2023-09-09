@@ -1,0 +1,21 @@
+1.Get Trades
+
+    Description:  Allows to retrieve trade information.
+                  If there are trade records available, it returns a successful response with the trade data.
+                  If no trade information is available, it returns a bad request response with an error message indicating that there are no trade records.
+   
+    Endpoints: trade/get-trades
+
+    Request: GET
+
+    Request Body: -
+                
+    Response:
+             Success:
+                    Object containing Trading information - 200 OK
+
+             Error:
+                   No Trade information available - 400 Bad Request
+
+        
+

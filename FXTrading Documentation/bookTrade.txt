@@ -1,0 +1,36 @@
+
+
+1.Book Trade
+
+    Description: Allows to book a trade and perform validation on trade data. 
+                It returns a response with booking status or validation errors.
+    
+    Endpoints: trade/book-trade
+
+    Request: POST
+
+    Request Body:
+                Trade - Object
+                    custName: String
+                    currencyPair:String
+                    usdAmount:String
+
+    Response:
+             Success:
+                    Map Object containing booking information - 200 OK
+
+             Error:
+                   1.Missing parameter
+                    -custName
+                    -currencyPair
+                    -usdAmount
+                   2.Empty parameter
+                    -custName
+                    -currencyPair
+                    -usdAmount
+                   3.Amount must be Integer
+                   4.Amount must be Positive
+                   5.currencyPair must USDINR
+
+        
+
