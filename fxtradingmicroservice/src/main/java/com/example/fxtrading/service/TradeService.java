@@ -35,48 +35,46 @@ public class TradeService {
 
             validationError.put("Customer","Customer name can't be empty!");
 
-       if(currencyPair.isEmpty()){
-                    validationError.put("Currency-Pair","Currency pair can't be empty");
+        if(currencyPair.isEmpty()){
+           
+            validationError.put("Currency-Pair","Currency pair can't be empty");
             
-        }else{
-
+         }else{
+            
                 if(!currencyPair.equalsIgnoreCase("USDINR"))
-                         validationError.put("Currency-Pair","Invalid Currency Pair it must be USDINR");
-        }
+                        
+                    validationError.put("Currency-Pair","Invalid Currency Pair it must be USDINR");
+         }
 
         if(!usdAmount.isEmpty()){
-
-
+            
             Double amount = 0.0;
-             try{
+            
+            try{
                         
                     amount = Double.parseDouble(usdAmount);
                      
-                }catch(NumberFormatException ne){
+             }catch(NumberFormatException ne){
 
                         validationError.put("USDAmount","Amount must be Integer");
                 
-                }
+             }
 
-                if(amount<0.0){
+             if(amount<0.0){
 
                      validationError.put("USDAmount","Amount must be Positive");
                
-                }
+             }
 
          }else{
 
-            validationError.put("USD Amount","USDAmount can't be empty!");
+                    validationError.put("USD Amount","USDAmount can't be empty!");
          }
         
          return validationError;
 
      }
-
-
-
-
-     
+ 
 
     /**
      * 
@@ -100,14 +98,9 @@ public class TradeService {
 
         return response;
 
-
-
      }
 
 
-
-    
-   
     /**
      * 
      * Books a trade, validates trade data, and returns a response with booking status or validation errors.
@@ -132,11 +125,10 @@ public class TradeService {
         
          Double amount  = 0.0;
 
-        response = isValid(trade.getCustName(),trade.getCurrencyPair(),trade.getUsdAmount());
+         response = isValid(trade.getCustName(),trade.getCurrencyPair(),trade.getUsdAmount());
         
          if(response.isEmpty()){
-
-
+                    
                     amount=new Double(trade.getUsdAmount());
 
                     Double finalAmount = amount*trade.getRate();
@@ -147,35 +139,27 @@ public class TradeService {
                     trade.setUsdAmount(usdAmount);
                     trade.setCurrencyPair(trade.getCurrencyPair().toUpperCase());
 
-                    Trade booTrade = new Trade(trade.getCustName(), trade.getCurrencyPair(), trade.getUsdAmount(), trade.getIndAmount());
+                    Trade bookTrade = new Trade(trade.getCustName(), trade.getCurrencyPair(), trade.getUsdAmount(), trade.getIndAmount());
+                   
+                    trades.add(bookTrade);
 
-                    
-                     trades.add(booTrade);
+                    response.put("Message", "Trade for " + trade.getCurrencyPair() + " has been booked with rate " + trade.getRate() + ". The amount of Rs " + trade.getIndAmount() + " will be transferred in 2 working days to " + trade.getCustName());
+            
+                    return ResponseEntity.ok().body(response);
 
-            }
+           }
          
 
-       if(response.isEmpty()){
-
-            response.put("Message", "Trade for " + trade.getCurrencyPair() + " has been booked with rate " + trade.getRate() + ". The amount of Rs " + trade.getIndAmount() + " will be transferred in 2 working days to " + trade.getCustName());
-            return ResponseEntity.ok().body(response);
-
-
-        }
-
         response.put("Message","Trade not booked");
-        return ResponseEntity.badRequest().body(response);
+       
+       return ResponseEntity.badRequest().body(response);
         
-
-    }
-
-
+   }
 
    /**
     * 
     * Retrieves trade information and returns it as a response. If no trade information is available, a bad request response with an error message is returned.
     * @return ResponseEntity containing trade information or an error message
-    
     */
    
     public ResponseEntity<Object> getTrades() {
